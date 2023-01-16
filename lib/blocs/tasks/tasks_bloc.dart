@@ -10,13 +10,17 @@ class TasksBloc extends HydratedBloc<TasksEvent, TasksState> {
     on<AddTask>(_onAddTask);
     on<UpdateTask>(_onUpdateTask);
     on<DeleteTask>(_onDeleteTask);
+    on<RemoveTask>(_onRemoveTask);
   }
 
   void _onAddTask(AddTask event, Emitter<TasksState> emit) {
     final state = this.state;
-    emit(TasksState(
-      allTasks: List.from(state.allTasks)..add(event.task),
-    ));
+    emit(
+      TasksState(
+        allTasks: List.from(state.allTasks)..add(event.task),
+        removedTasks: state.removedTasks,
+      ),
+    );
   }
 
   // Used to toggle checkbox
@@ -30,15 +34,34 @@ class TasksBloc extends HydratedBloc<TasksEvent, TasksState> {
         ? allTasks.insert(index, task.copyWith(isDone: true))
         : allTasks.insert(index, task.copyWith(isDone: false));
 
-    emit(TasksState(allTasks: allTasks));
+    emit(
+      TasksState(allTasks: allTasks, removedTasks: state.removedTasks),
+    );
   }
 
   void _onDeleteTask(DeleteTask event, Emitter<TasksState> emit) {
     final state = this.state;
     final task = event.task;
 
-    List<Task> allTasks = List.from(state.allTasks)..remove(task);
-    emit(TasksState(allTasks: allTasks));
+    List<Task> removedTasks = List.from(state.removedTasks)..remove(task);
+    emit(
+      TasksState(allTasks: state.allTasks, removedTasks: removedTasks),
+    );
+  }
+
+  void _onRemoveTask(RemoveTask event, Emitter<TasksState> emit) {
+    final state = this.state;
+    final task = event.task;
+
+    emit(
+      TasksState(
+        allTasks: List.from(state.allTasks)..remove(task),
+        removedTasks: List.from(state.removedTasks)
+          ..add(
+            event.task.copyWith(isDeleted: true),
+          ),
+      ),
+    );
   }
 
   @override
