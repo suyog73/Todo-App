@@ -3,23 +3,25 @@
 import 'package:flutter/material.dart';
 import 'package:todo_bloc/helpers/constants.dart';
 import 'package:todo_bloc/models/task.dart';
-import 'package:todo_bloc/services/guid_generator.dart';
 
 import '../blocs/bloc_exports.dart';
 
-class AddTaskScreen extends StatelessWidget {
-  AddTaskScreen({Key? key}) : super(key: key);
-
-  TextEditingController titleController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
+class EditTaskScreen extends StatelessWidget {
+  const EditTaskScreen({Key? key, required this.oldTask}) : super(key: key);
+  final Task oldTask;
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController titleController =
+        TextEditingController(text: oldTask.title);
+    TextEditingController descriptionController =
+        TextEditingController(text: oldTask.description);
+
     return Container(
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          const Text("Add Task", style: TextStyle(fontSize: 24)),
+          const Text("Edit Task", style: TextStyle(fontSize: 24)),
           const SizedBox(height: 10),
           TextField(
             controller: titleController,
@@ -58,13 +60,17 @@ class AddTaskScreen extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Task task = Task(
+                  Task editedTask = Task(
                     title: titleController.text,
-                    id: GUIDGen.generate(),
+                    id: oldTask.id,
+                    isFavorite: oldTask.isFavorite,
                     description: descriptionController.text,
                     date: DateTime.now().toString(),
+                    isDone: false,
                   );
-                  context.read<TasksBloc>().add(AddTask(task: task));
+                  context.read<TasksBloc>().add(
+                        EditTask(oldTask: oldTask, newTask: editedTask),
+                      );
                   Navigator.pop(context);
                 },
                 child: Container(
@@ -75,7 +81,7 @@ class AddTaskScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: Text(
-                    "Add",
+                    "Save",
                     style: TextStyle(color: lightSecondaryColor, fontSize: 18),
                   ),
                 ),

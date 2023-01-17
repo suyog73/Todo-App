@@ -53,23 +53,3 @@ class TasksList extends StatelessWidget {
     );
   }
 }
-
-// Expanded(
-// child: Container(
-// padding: const EdgeInsets.symmetric(horizontal: 20),
-// decoration: const BoxDecoration(
-// borderRadius: BorderRadius.only(
-// topLeft: Radius.circular(20),
-// topRight: Radius.circular(20),
-// ),
-// ),
-// child: ListView.builder(
-// itemCount: taskList.length,
-// itemBuilder: (BuildContext context, int index) {
-// Task task = taskList[index];
-//
-// return TaskTile(task: task);
-// },
-// ),
-// ),
-// );

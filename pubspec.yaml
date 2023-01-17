@@ -22,6 +22,9 @@ dependencies:
   path_provider: ^2.0.11
   flutter_launcher_icons: ^0.11.0
   lottie: ^2.2.0
+  intl: ^0.18.0
+  font_awesome_flutter: ^10.3.0
+  url_launcher: ^6.1.7
 
 dev_dependencies:
   flutter_test:

@@ -28,7 +28,16 @@ class RecycleBin extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Recycle Bin"),
-                Text("${state.removedTasks.length}"),
+                Row(
+                  children: [
+                    InkWell(
+                        onTap: () {
+                          showAlertDialog(context);
+                        },
+                        child: const Icon(Icons.delete_forever_sharp)),
+                    Text("${state.removedTasks.length}"),
+                  ],
+                ),
               ],
             ),
           ),
@@ -60,6 +69,75 @@ class RecycleBin extends StatelessWidget {
             ],
           ),
         );
+      },
+    );
+  }
+
+  Widget generateButton(String name) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        width: double.infinity * 0.4,
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        decoration: BoxDecoration(
+          color: name == "Delete" ? lightPrimaryColor : Colors.transparent,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Text(
+          name,
+          style: const TextStyle(fontSize: 16),
+        ),
+      ),
+    );
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget deleteButton = InkWell(
+        onTap: () {
+          context.read<TasksBloc>().add(DeleteAllTask());
+
+          Navigator.pop(context);
+        },
+        child: generateButton("Delete"));
+
+    // set up the button
+    Widget cancelButton = InkWell(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: generateButton("Cancel"));
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      actionsAlignment: MainAxisAlignment.spaceBetween,
+      title: const Text("Delete Forever"),
+      content:
+          const Text("After deleting task you are not able to restore them."),
+      actions: [cancelButton, deleteButton],
+    );
+
+    // set up the button
+    Widget okButton = TextButton(
+      child: const Text("OK"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    AlertDialog alertDialog = AlertDialog(
+      title: const Text("Nothing to Delete"),
+      actions: [okButton],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return context.read<TasksBloc>().state.removedTasks.isEmpty
+            ? alertDialog
+            : alert;
       },
     );
   }
