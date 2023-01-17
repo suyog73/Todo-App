@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_bloc/helpers/constants.dart';
 import 'package:todo_bloc/screens/recycle_bin.dart';
-import 'package:todo_bloc/screens/task_screen.dart';
+import 'package:todo_bloc/screens/tabs_screen.dart';
 
 import '../blocs/bloc_exports.dart';
 
@@ -47,13 +47,13 @@ class MyDrawer extends StatelessWidget {
             BlocBuilder<TasksBloc, TasksState>(
               builder: (context, state) {
                 return ListTile(
-                  onTap: () => Navigator.of(context)
-                      .pushReplacementNamed(TasksScreen.id),
+                  onTap: () =>
+                      Navigator.of(context).pushReplacementNamed(TabsScreen.id),
                   title: const Text(
-                    "My Tasks",
+                    "Pending Tasks",
                     style: TextStyle(fontSize: 18),
                   ),
-                  trailing: Text("${state.allTasks.length}"),
+                  trailing: Text("${state.pendingTasks.length}"),
                   leading: Icon(
                     Icons.folder_special,
                     color: lightPrimaryColor,

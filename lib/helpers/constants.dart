@@ -4,3 +4,12 @@ Color darkPrimaryColor = const Color(0xffFF8976);
 Color lightPrimaryColor = const Color(0xffFE5435);
 Color darkSecondaryColor = const Color(0xff000000);
 Color lightSecondaryColor = const Color(0xffFFFFFF);
+
+InputDecoration kInputDecoration = InputDecoration(
+  border: OutlineInputBorder(
+    borderSide: BorderSide(color: lightPrimaryColor),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: lightPrimaryColor),
+  ),
+);

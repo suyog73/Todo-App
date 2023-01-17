@@ -4,18 +4,18 @@ import 'package:todo_bloc/helpers/constants.dart';
 import 'package:todo_bloc/models/task.dart';
 import 'package:todo_bloc/screens/add_task_screen.dart';
 import 'package:todo_bloc/screens/my_drawer.dart';
+import 'package:todo_bloc/services/get_date_time.dart';
 import 'package:todo_bloc/widgets/task_lists.dart';
 
 import '../blocs/bloc_exports.dart';
 
-class TasksScreen extends StatelessWidget {
-  const TasksScreen({Key? key}) : super(key: key);
-
-  static const id = "task_screen";
+class PendingTasksScreen extends StatelessWidget {
+  const PendingTasksScreen({Key? key}) : super(key: key);
 
   void _addTask(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (context) => SingleChildScrollView(
         child: Container(
           padding:
@@ -32,7 +32,7 @@ class TasksScreen extends StatelessWidget {
 
     return BlocBuilder<TasksBloc, TasksState>(
       builder: (context, state) {
-        List<Task> tasksList = state.allTasks;
+        List<Task> tasksList = state.pendingTasks;
 
         return Scaffold(
           key: key,
@@ -53,33 +53,59 @@ class TasksScreen extends StatelessWidget {
                 color: lightPrimaryColor,
                 padding: const EdgeInsets.only(
                     top: 60, left: 30, right: 30, bottom: 30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    InkWell(
-                      onTap: () => key.currentState!.openDrawer(),
-                      child: CircleAvatar(
-                        radius: 30,
-                        backgroundColor: Colors.white,
-                        child: Icon(
-                          Icons.list,
-                          size: 30,
-                          color: lightPrimaryColor,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          onTap: () => key.currentState!.openDrawer(),
+                          child: CircleAvatar(
+                            radius: 30,
+                            backgroundColor: Colors.white,
+                            child: Icon(
+                              Icons.list,
+                              size: 30,
+                              color: lightPrimaryColor,
+                            ),
+                          ),
                         ),
-                      ),
+                        const SizedBox(height: 30),
+                        const Text(
+                          'ToDo',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 40,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        Text(
+                          '${tasksList.length} Pending Tasks ',
+                          style: const TextStyle(
+                              fontSize: 18, color: Colors.white),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 30),
-                    const Text(
-                      'ToDo',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 40,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    Text(
-                      '${tasksList.length} Tasks',
-                      style: const TextStyle(fontSize: 18, color: Colors.white),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          GetDateAndTime().getWeekDay(),
+                          style: const TextStyle(
+                            fontSize: 22,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          GetDateAndTime().getDate(),
+                          style: const TextStyle(
+                            fontSize: 22,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

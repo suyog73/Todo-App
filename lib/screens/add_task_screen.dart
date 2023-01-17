@@ -11,6 +11,7 @@ class AddTaskScreen extends StatelessWidget {
   AddTaskScreen({Key? key}) : super(key: key);
 
   TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +25,23 @@ class AddTaskScreen extends StatelessWidget {
             controller: titleController,
             autofocus: true,
             cursorColor: lightPrimaryColor,
-            decoration: InputDecoration(
+            decoration: kInputDecoration.copyWith(
               label: Text(
                 "Title",
-                style: TextStyle(color: lightPrimaryColor, fontSize: 18),
+                style: TextStyle(color: lightPrimaryColor, fontSize: 16),
               ),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: lightPrimaryColor),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: lightPrimaryColor),
+            ),
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: descriptionController,
+            cursorColor: lightPrimaryColor,
+            minLines: 3,
+            maxLines: 5,
+            decoration: kInputDecoration.copyWith(
+              label: Text(
+                "Description",
+                style: TextStyle(color: lightPrimaryColor, fontSize: 16),
               ),
             ),
           ),
@@ -50,8 +58,11 @@ class AddTaskScreen extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Task task =
-                      Task(title: titleController.text, id: GUIDGen.generate());
+                  Task task = Task(
+                    title: titleController.text,
+                    id: GUIDGen.generate(),
+                    description: descriptionController.text,
+                  );
                   context.read<TasksBloc>().add(AddTask(task: task));
                   Navigator.pop(context);
                 },

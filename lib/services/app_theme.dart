@@ -21,8 +21,11 @@ class AppThemes {
       textTheme: const TextTheme(
         subtitle1: TextStyle(color: Colors.white),
       ),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Colors.grey, unselectedItemColor: Colors.white),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: Colors.black,
+        selectedItemColor: lightPrimaryColor,
+        unselectedItemColor: Colors.white,
+      ),
     ),
     AppTheme.lightTheme: ThemeData(
       primarySwatch: Colors.grey,
@@ -42,10 +45,11 @@ class AppThemes {
       textTheme: const TextTheme(
         subtitle1: TextStyle(color: Colors.black),
       ),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Colors.grey,
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.white),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: Colors.white,
+        selectedItemColor: lightPrimaryColor,
+        unselectedItemColor: Colors.black,
+      ),
     ),
   };
 }
